@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>DE GREAT FOOTBALL 2027</title>
+<style>
+:root{color-scheme:dark;font-family:Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:#101820;color:#fff;display:flex;min-height:100vh;flex-direction:column}
+header{padding:12px 16px;background:#17232d;display:flex;justify-content:space-between;align-items:center;gap:10px}
+h1{font-size:clamp(17px,4vw,24px);margin:0;letter-spacing:1px}
+header span{color:#e8c65a;font-size:12px}
+main{width:min(100%,1000px);margin:auto;padding:12px;display:grid;gap:12px}
+.panel{background:#1a2934;border:1px solid #344754;border-radius:12px;padding:12px}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.roster{display:flex;gap:8px;overflow-x:auto;padding:10px 0;scrollbar-width:thin}
+.player-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:118px;max-width:130px;padding:9px 7px;background:#101c24;color:#fff;border:1px solid #405360;border-radius:10px}
+.player-card.selected{border:2px solid #e8c65a;background:#263643}
+.player-card strong{font-size:11px;text-align:center;line-height:1.2}
+.player-card small{font-size:10px;color:#b7c5cd}
+.mini-rating{font-weight:bold;color:#f4d56a;font-size:19px}
+.mini-avatar{width:45px;height:49px;border-radius:8px;display:grid;place-items:center;font-size:17px;font-weight:bold;color:#101820}
+.mini-avatar.gold{background:linear-gradient(145deg,#f1d36b,#92701f)}
+.mini-avatar.blue{background:linear-gradient(145deg,#8dc9ef,#245a89)}
+.mini-avatar.red{background:linear-gradient(145deg,#ef9a87,#8c302c)}
+.mini-avatar.green{background:linear-gradient(145deg,#a7d59a,#39764a)}
+.mini-avatar.purple{background:linear-gradient(145deg,#c7a4ed,#65458d)}
+.selected-player{display:flex;gap:12px;align-items:center;padding-top:5px}
+.player-info{min-width:0}
+
+.card{display:flex;gap:12px;align-items:center;flex:1;min-width:230px}
+.portrait{width:66px;height:82px;border-radius:8px;background:linear-gradient(145deg,#d9b64e,#795b1a);display:grid;place-items:center;font-size:32px;color:#18212a;font-weight:bold}
+.rating{font-size:25px;font-weight:bold;color:#f4d56a}
+.muted{color:#aebdc7;font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:8px}
+.stat{background:#101c24;padding:7px;border-radius:7px;text-align:center;font-size:12px}
+.stat b{display:block;font-size:16px;color:#f4d56a}
+#game{width:100%;display:block;background:#246b3d;border-radius:12px;border:2px solid #607d55;touch-action:none}
+.controls{display:flex;justify-content:space-between;align-items:center;gap:12px}
+button{background:#d8b64c;color:#17212a;border:0;border-radius:10px;padding:13px 18px;font-weight:bold;font-size:15px;min-height:48px}
+button:active{transform:scale(.97)}
+#status{font-size:13px;color:#c3d0d8}
+@media(max-width:520px){.stats{grid-template-columns:repeat(4,1fr)}.controls{align-items:stretch}.controls button{flex:1;padding:12px 8px}}
+</style>
+</head>
+<body>
+<header><h1>⚽ DE GREAT FOOTBALL 2027</h1><span>PLAYABLE BUILD 02 · ROSTER</span></header>
+<main>
+<section class="panel">
+ <div class="row" style="justify-content:space-between"><strong>PLAYER ROSTER</strong><span class="muted">Tap a card to select the player</span></div>
+ <div id="roster" class="roster">
+  <button class="player-card selected" data-player="0" type="button"><span class="mini-rating">86</span><span class="mini-avatar gold">NH</span><strong>Nserekø Hamuzã</strong><small>🇺🇬 UGA · RW · #11</small></button>
+  <button class="player-card" data-player="1" type="button"><span class="mini-rating">84</span><span class="mini-avatar blue">JM</span><strong>Jonah Mutesi</strong><small>🇺🇬 UGA · ST · #9</small></button>
+  <button class="player-card" data-player="2" type="button"><span class="mini-rating">83</span><span class="mini-avatar red">DK</span><strong>Daniel Kato</strong><small>🇺🇬 UGA · CM · #8</small></button>
+  <button class="player-card" data-player="3" type="button"><span class="mini-rating">82</span><span class="mini-avatar green">AB</span><strong>Alex Bukenya</strong><small>🇺🇬 UGA · CB · #4</small></button>
+  <button class="player-card" data-player="4" type="button"><span class="mini-rating">80</span><span class="mini-avatar purple">SO</span><strong>Samuel Okello</strong><small>🇺🇬 UGA · GK · #1</small></button>
+ </div>
+ <div class="selected-player">
+  <div id="portrait" class="portrait">NH</div>
+  <div class="player-info"><div id="overall" class="rating">86 OVR</div><strong id="playerName">Nserekø Hamuzã</strong><div id="playerMeta" class="muted">🇺🇬 UGANDA · RW · #11</div><div id="playerRole" class="muted">Right winger · Selected player</div></div>
+ </div>
+ <div id="stats" class="stats">
+  <div class="stat">PAC<b>94</b></div><div class="stat">ACC<b>95</b></div><div class="stat">STA<b>83</b></div><div class="stat">STR<b>76</b></div>
+  <div class="stat">CTL<b>87</b></div><div class="stat">PAS<b>79</b></div><div class="stat">SHO<b>85</b></div><div class="stat">POS<b>RW</b></div>
+ </div>
+</section>
+<canvas id="game" width="900" height="520" aria-label="Top-down football pitch. Move the gold player with the controls and shoot toward the top goal."></canvas>
+<section class="panel controls">
+ <div><div><strong>Match practice</strong></div><div id="status">Select a player card, then move that player with arrow keys / WASD or drag them on the pitch. Shoot toward the top goal.</div></div>
+ <button id="shoot">SHOOT ⚽</button>
+ <button id="reset">RESET</button>
+</section>
+</main>
+<script>
+(()=>{
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+const players=[
+ {name:'Nserekø Hamuzã',initials:'NH',flag:'🇺🇬',country:'UGANDA',pos:'RW',number:11,overall:86,role:'Right winger',stats:[94,95,83,76,87,79,85],shirt:'#e7bd35',hair:'#25201b',skin:'#f0c39a'},
+ {name:'Jonah Mutesi',initials:'JM',flag:'🇺🇬',country:'UGANDA',pos:'ST',number:9,overall:84,role:'Striker',stats:[89,88,85,84,86,78,88],shirt:'#3988c7',hair:'#171717',skin:'#8b5638'},
+ {name:'Daniel Kato',initials:'DK',flag:'🇺🇬',country:'UGANDA',pos:'CM',number:8,overall:83,role:'Central midfielder',stats:[81,82,90,78,86,88,76],shirt:'#c64c43',hair:'#29201a',skin:'#9b6240'},
+ {name:'Alex Bukenya',initials:'AB',flag:'🇺🇬',country:'UGANDA',pos:'CB',number:4,overall:82,role:'Centre-back',stats:[76,74,86,88,80,79,68],shirt:'#47945b',hair:'#171717',skin:'#75472f'},
+ {name:'Samuel Okello',initials:'SO',flag:'🇺🇬',country:'UGANDA',pos:'GK',number:1,overall:80,role:'Goalkeeper',stats:[72,75,82,84,78,80,65],shirt:'#8959b5',hair:'#201a18',skin:'#a66b49'}
+];
+let selectedIndex=0;
+const player={x:450,y:370,r:18,speed:3.1,dx:0,dy:0};
+const ball={x:450,y:340,r:9,vx:0,vy:0};
+const keys=new Set();let dragging=false,last=0,goalText='';
+function pitch(){
+ ctx.fillStyle='#277342';ctx.fillRect(0,0,900,520);
+ for(let i=0;i<9;i++){ctx.fillStyle=i%2?'#2b7b47':'#246b3d';ctx.fillRect(i*100,0,100,520)}
+ ctx.strokeStyle='rgba(255,255,255,.85)';ctx.lineWidth=3;
+ ctx.strokeRect(28,22,844,476);ctx.beginPath();ctx.moveTo(28,260);ctx.lineTo(872,260);ctx.stroke();
+ ctx.beginPath();ctx.arc(450,260,75,0,Math.PI*2);ctx.stroke();
+ ctx.strokeRect(300,22,300,105);ctx.strokeRect(365,22,170,45);
+ ctx.strokeRect(300,393,300,105);ctx.strokeRect(365,453,170,45);
+ ctx.fillStyle='#dce7df';ctx.fillRect(390,3,120,19);ctx.fillRect(390,498,120,19);
+ ctx.fillStyle='rgba(255,255,255,.9)';ctx.beginPath();ctx.arc(450,78,3,0,Math.PI*2);ctx.fill();
+}
+function drawPlayer(){
+ const p=players[selectedIndex];
+ ctx.save();ctx.translate(player.x,player.y);
+ ctx.fillStyle='rgba(0,0,0,.25)';ctx.beginPath();ctx.ellipse(0,17,19,7,0,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle=p.shirt;ctx.fillRect(-12,-5,24,23);
+ ctx.fillStyle='#202b36';ctx.fillRect(-11,15,8,13);ctx.fillRect(3,15,8,13);
+ ctx.fillStyle=p.skin;ctx.beginPath();ctx.arc(0,-14,11,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle=p.hair;ctx.beginPath();ctx.arc(0,-18,11,Math.PI,Math.PI*2);ctx.fill();
+ ctx.fillStyle='#fff';ctx.font='bold 10px Arial';ctx.textAlign='center';ctx.fillText(String(p.number),0,9);
+ ctx.restore();
+}
+function selectPlayer(index){
+ selectedIndex=index;const p=players[index];
+ document.getElementById('portrait').textContent=p.initials;
+ document.getElementById('portrait').style.background=`linear-gradient(145deg, ${p.shirt}, #18232b)`;
+ document.getElementById('overall').textContent=p.overall+' OVR';
+ document.getElementById('playerName').textContent=p.name;
+ document.getElementById('playerMeta').textContent=`${p.flag} ${p.country} · ${p.pos} · #${p.number}`;
+ document.getElementById('playerRole').textContent=p.role+' · Selected player';
+ const labels=['PAC','ACC','STA','STR','CTL','PAS','SHO'];
+ document.getElementById('stats').innerHTML=p.stats.map((v,i)=>`<div class="stat">${labels[i]}<b>${v}</b></div>`).join('')+`<div class="stat">POS<b>${p.pos}</b></div>`;
+ document.querySelectorAll('.player-card').forEach((el,i)=>el.classList.toggle('selected',i===index));
+ player.speed=2.5+(p.stats[0]/100)*1.4;
+}
+document.querySelectorAll('.player-card').forEach((el)=>el.addEventListener('click',()=>selectPlayer(Number(el.dataset.player))));
+function drawBall(){
+ ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);ctx.fill();
+ ctx.strokeStyle='#202a30';ctx.lineWidth=1.5;ctx.stroke();
+ ctx.fillStyle='#202a30';ctx.beginPath();ctx.arc(ball.x,ball.y,3,0,Math.PI*2);ctx.fill();
+}
+function frame(t){
+ const dt=Math.min((t-last)/16.67||1,2);last=t;
+ let dx=(keys.has('ArrowRight')||keys.has('d')?1:0)-(keys.has('ArrowLeft')||keys.has('a')?1:0);
+ let dy=(keys.has('ArrowDown')||keys.has('s')?1:0)-(keys.has('ArrowUp')||keys.has('w')?1:0);
+ const len=Math.hypot(dx,dy)||1;player.x=Math.max(48,Math.min(852,player.x+dx/len*player.speed*dt));player.y=Math.max(48,Math.min(472,player.y+dy/len*player.speed*dt));
+ ball.x+=ball.vx*dt;ball.y+=ball.vy*dt;ball.vx*=Math.pow(.985,dt);ball.vy*=Math.pow(.985,dt);
+ if(Math.hypot(ball.x-player.x,ball.y-player.y)<player.r+ball.r+2 && Math.hypot(ball.vx,ball.vy)<1.4){ball.x=player.x;ball.y=player.y-27}
+ if(ball.x<38||ball.x>862)ball.vx*=-.65;
+ if(ball.y<20){if(ball.x>390&&ball.x<510){goalText='GOAL!';document.getElementById('status').textContent='GOAL! Great shot. Press RESET to practise again.'}ball.vy*=-.6}
+ if(ball.y>500)ball.vy*=-.6;
+ pitch();drawBall();drawPlayer();
+ if(goalText){ctx.fillStyle='#f6d65f';ctx.font='bold 42px Arial';ctx.textAlign='center';ctx.fillText(goalText,450,240)}
+ requestAnimationFrame(frame);
+}
+window.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();keys.add(e.key)});
+window.addEventListener('keyup',e=>keys.delete(e.key));
+function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*900/r.width,y:(e.clientY-r.top)*520/r.height}}
+canvas.addEventListener('pointerdown',e=>{const p=point(e);if(Math.hypot(p.x-player.x,p.y-player.y)<45){dragging=true;canvas.setPointerCapture(e.pointerId)}});
+canvas.addEventListener('pointermove',e=>{if(dragging){const p=point(e);player.x=Math.max(48,Math.min(852,p.x));player.y=Math.max(48,Math.min(472,p.y));ball.x=player.x;ball.y=player.y-27}});
+canvas.addEventListener('pointerup',()=>dragging=false);canvas.addEventListener('pointercancel',()=>dragging=false);
+document.getElementById('shoot').addEventListener('click',()=>{const d=Math.hypot(ball.x-player.x,ball.y-player.y);if(d<75){ball.x=player.x;ball.y=player.y-25;ball.vx=(450-player.x)*.012;ball.vy=-9;goalText=''}else{ball.vx=0;ball.vy=-8;goalText=''}});
+document.getElementById('reset').addEventListener('click',()=>{player.x=450;player.y=370;ball.x=450;ball.y=340;ball.vx=0;ball.vy=0;goalText='';document.getElementById('status').textContent='Select a player card, then move that player with arrow keys / WASD or drag them on the pitch. Shoot toward the top goal.'});
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
